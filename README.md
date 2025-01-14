@@ -56,6 +56,7 @@ $HOME
 | Question | Answer |
 | --- | --- |
 | Profile & User info does not appear? | By default, it set without profile and user info. You can enable it by uncomment the `image` @PROFILE PICTURE and `label` @USER INFO in `hyprlock.conf` |
+| Battery percentage number does not appear? | Change your battery module in `battery.sh`. The default is `BAT0`, change it the number until it detect your battery |
 | How to change the 24H Format to 12H Format? | Comment the 24H format and uncomment the 12H format. also uncomment the AM/PM `label` & `shape` in `hyprlock.conf` |
 | null location or Unable to determine your location? | Change the IP Geolocation provider in `weatherinfo.sh` |
 
