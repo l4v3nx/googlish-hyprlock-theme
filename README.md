@@ -20,6 +20,11 @@
 ## 📦 Installation
 <b>🔻 This configuration is based on a 1080p display, if you are using a higher screen resolution,</br>You may need to reconfigure the sizes and recoordinate all the components.</b>
 
+<b>Auto-Installation :</b>
+```bash
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/Tamarindtype/googlish-hyprlock-theme/main/install.sh)"
+```
+</br><b>Manual Installation :</b>
 ```bash
 # Backup your current Hyprlock config first!
 # Clone the repository
