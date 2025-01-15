@@ -28,10 +28,13 @@ fi
 echo "Cloning repository..."
 git clone "$REPO_URL"
 
-# Move files to the config directory
-echo "Moving files to $CONFIG_DIR..."
+# Move only the hyprlock folder and hyprlock.conf to the config directory
+echo "Moving hyprlock folder and hyprlock.conf to $CONFIG_DIR..."
 mkdir -p "$CONFIG_DIR"
-mv ./googlish-hyprlock-theme/* "$CONFIG_DIR/"
+
+# Move only the 'hyprlock' folder and 'hyprlock.conf' (excluding README.md, install.sh, etc.)
+mv ./googlish-hyprlock-theme/hyprlock "$CONFIG_DIR/"
+mv ./googlish-hyprlock-theme/hyprlock.conf "$CONFIG_DIR/"
 
 # Navigate to the hyprlock directory
 echo "Navigating to $CONFIG_DIR/hyprlock..."
