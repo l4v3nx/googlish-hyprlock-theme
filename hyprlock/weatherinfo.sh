@@ -1,5 +1,11 @@
 #!/bin/bash
 
+# Ping the website
+if ! ping -c 1 ip-api.com >/dev/null 2>&1; then
+	echo "No internet connection available."
+	exit 1
+fi
+
 # Get location data using IP Geolocation
 
 # Recommended with API, but you can try w/o API [IPINFO.IO]
@@ -25,15 +31,15 @@ COUNTRY=$(echo "$location_data" | jq -r '.countryCode // empty')
 
 # Check if CITY and COUNTRY are valid
 if [[ -n "$CITY" && -n "$COUNTRY" ]]; then
-    # Fetch weather info for the detected city from wttr.in
-    weather_info=$(curl -s "wttr.in/$CITY?format=%c+%C+%t" 2>/dev/null)
+	# Fetch weather info for the detected city from wttr.in
+	weather_info=$(curl -s "wttr.in/$CITY?format=%c+%C+%t" 2>/dev/null)
 
-    # Check if the weather info is valid
-    if [[ -n "$weather_info" ]]; then
-        echo "$COUNTRY, $CITY: $weather_info"
-    else
-        echo "Weather info unavailable for $COUNTRY, $CITY"
-    fi
+	# Check if the weather info is valid
+	if [[ -n "$weather_info" ]]; then
+		echo "$COUNTRY, $CITY: $weather_info"
+	else
+		echo "Weather info unavailable for $COUNTRY, $CITY"
+	fi
 else
-    echo "Unable to determine your location"
+	echo "Unable to determine your location"
 fi
