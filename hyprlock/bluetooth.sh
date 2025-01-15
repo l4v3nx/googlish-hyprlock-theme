@@ -16,7 +16,7 @@ if [ "$bluetooth_status" != "yes" ]; then
 fi
 
 # Initialize connected devices
-connected_devices=""
+connected_devices=$(echo "$connected_devices" | sed 's/[[:space:]]*$//')
 
 # Process Bluetooth devices
 while read -r line; do
@@ -31,12 +31,6 @@ while read -r line; do
     echo "Finished processing $device_mac" >&2
     echo "---" >&2
 done < <(bluetoothctl devices)
-
-# Trim trailing whitespace from connected_devices
-connected_devices=$(echo "$connected_devices" | sed 's/[[:space:]]*$//')
-
-# Debug: Display connected devices
-echo "Connected devices: $connected_devices" >&2
 
 # If no connected devices, show "No Devices"
 if [ -z "$connected_devices" ]; then
