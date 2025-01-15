@@ -73,7 +73,7 @@ $HOME
 
 | Details | Credit |
 | --- | --- |
-| Battery & Playerctl Widget Scripts | @ashish-kus [minimal Hyprlock](https://github.com/lunar-os/ZenCss) |
+| Battery & Playerctl Widget Scripts | @ashish-kus [minimal Hyprlock](https://gist.github.com/ashish-kus/dd562b0bf5e8488a09e0b9c289f4574c) |
 | Helped Me Create Dynamic WiFi, Bluetooth, Weathercast and Greeting Widget | @OPENAI [ChatGPT](https://chatgpt.com/)|
 
 
