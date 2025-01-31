@@ -18,7 +18,7 @@
 </details>
 
 ## 📦 Installation
-<b>🔻 This configuration is based on a 1080p display, if you are using a higher screen resolution,</br>You may need to reconfigure the sizes and recoordinate all the components.</b>
+><i><b>❗ This configuration is based on a 1080p display, if you are using a higher screen resolution,</br>you may need to reconfigure the sizes and recoordinate all the components.</b></i>
 
 <b>Auto-Installation :</b>
 ```bash
