@@ -58,7 +58,7 @@ case "$1" in
 	if [ -z "$title" ]; then
 		echo ""
 	else
-		truncate_with_ellipsis "$title" 28 # Limit the output to 50 characters
+		truncate_with_ellipsis "$title" 47 # Limit the output to 50 characters
 	fi
 	;;
 --artist)
