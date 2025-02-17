@@ -5,7 +5,7 @@
 
 # Read the username alias from hyprlock.conf
 # username=$(grep -oP '^\$USER\s*=\s*\K\S+' ~/.config/hypr/hyprlock.conf)
-username=$(whoami)
+# username=$(whoami)
 
 # Check if the username was successfully extracted
 # if [ -z "$username" ]; then
@@ -30,4 +30,4 @@ else
 fi
 
 # Output the combined text
-echo -e "Hello, $username! $greeting"
+echo -e "$greeting"
