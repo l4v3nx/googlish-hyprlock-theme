@@ -77,5 +77,21 @@ fi
 # Optional: Run hyprlock
 run_cmd "Running Hyprlock" "hyprlock"
 
+read -p "Do you want to install the 'hyprlock-change-wallpaper' command? [Y/n]: " choice
+choice=${choice,,}
+
+if [[ "$choice" != "n" ]]; then
+    run_cmd "Installing hyprlock-change-wallpaper shortcut" "sudo ln -sf $CONFIG_DIR/hyprlock/change-wallpaper.sh /usr/local/bin/hyprlock-change-wallpaper"
+    run_cmd "Make command runable" "chmod +x $CONFIG_DIR/hyprlock/change-wallpaper.sh"
+
+    if command -v hyprlock-change-wallpaper &>/dev/null; then
+        echo "hyprlock-change-wallpaper was succesfully installed"
+    else
+        echo "Error while installing hyprlock-change-wallpaper."
+    fi
+else
+    echo "⏭ installation of hyprlock-change-wallpaper skipped"
+fi
+
 # Cleanup
 run_cmd "Cleaning up temp files..." "rm -rf \"$TEMP_DIR\""
