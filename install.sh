@@ -2,48 +2,80 @@
 
 # Set paths
 CONFIG_DIR="$HOME/.config/hypr"
-BACKUP_DIR="$HOME/.config/hypr/hyprlock-backup-$(date +%Y%m%d%H%M%S)"
+BACKUP_DIR="$CONFIG_DIR/hyprlock-backup-$(date +%Y%m%d%H%M%S)"
 REPO_URL="https://github.com/Tamarindtype/googlish-hyprlock-theme.git"
+TEMP_DIR="$(mktemp -d)"
 
-# Backup existing configuration folder and file
-echo "Checking for existing configurations to back up..."
-if [ -d "$CONFIG_DIR/hyprlock" ] || [ -f "$CONFIG_DIR/hyprlock.conf" ]; then
-    echo "Creating backup directory: $BACKUP_DIR"
-    mkdir -p "$BACKUP_DIR"
-    
-    if [ -d "$CONFIG_DIR/hyprlock" ]; then
-        echo "Backing up folder: $CONFIG_DIR/hyprlock"
-        mv "$CONFIG_DIR/hyprlock" "$BACKUP_DIR/"
-    fi
-    
-    if [ -f "$CONFIG_DIR/hyprlock.conf" ]; then
-        echo "Backing up file: $CONFIG_DIR/hyprlock.conf"
-        mv "$CONFIG_DIR/hyprlock.conf" "$BACKUP_DIR/"
-    fi
+read -p "Do you want to see every command executed? [y/N]: " choice
+choice=${choice,,}
+
+if [[ "$choice" == "y" ]]; then
+    SHOW_COMMANDS=true
 else
-    echo "No existing hyprlock configuration found. Skipping backup."
+    SHOW_COMMANDS=false
 fi
 
-# Clone the repository
-echo "Cloning repository..."
-git clone "$REPO_URL"
+run_cmd() {
+    local desc="$1"
+    local cmd="$2"
 
-# Move only the hyprlock folder and hyprlock.conf to the config directory
-echo "Moving hyprlock folder and hyprlock.conf to $CONFIG_DIR..."
-mkdir -p "$CONFIG_DIR"
+    if [[ "$SHOW_COMMANDS" == true ]]; then 
+        echo -e "\n$desc"
+        echo "-> $cmd"
+        read -p "Run command? [Y/n]: " confirm
+        confirm=${confirm,,} 
 
-# Move only the 'hyprlock' folder and 'hyprlock.conf' (excluding README.md, install.sh, etc.)
-mv ./googlish-hyprlock-theme/hyprlock "$CONFIG_DIR/"
-mv ./googlish-hyprlock-theme/hyprlock.conf "$CONFIG_DIR/"
+        if [[ "$confirm" == "n" ]]; then
+            echo "⏭ Skipped."
+        else
+            eval "$cmd"
+        fi
+    else
+        eval "$cmd"
+    fi
+}
 
-# Navigate to the hyprlock directory
-echo "Navigating to $CONFIG_DIR/hyprlock..."
-cd "$CONFIG_DIR/hyprlock/" || { echo "Directory $CONFIG_DIR/hyprlock/ not found!"; exit 1; }
+# Backup existing config
+if [ -d "$CONFIG_DIR/hyprlock" ] || [ -f "$CONFIG_DIR/hyprlock.conf" ]; then
+    read -p "Do you want to create a backup of your config? [Y/n]: " choice
+    choice=${choice,,}
+
+    if [[ "$choice" != "n" ]]; then
+        run_cmd "Creating backup folder" "mkdir -p \"$BACKUP_DIR\""
+        
+        if [ -d "$CONFIG_DIR/hyprlock" ]; then
+            run_cmd "Backing up folder" "mv \"$CONFIG_DIR/hyprlock\" \"$BACKUP_DIR/\""
+        fi
+
+        if [ -f "$CONFIG_DIR/hyprlock.conf" ]; then
+            run_cmd "Backing up file" "mv \"$CONFIG_DIR/hyprlock.conf\" \"$BACKUP_DIR/\""
+        fi
+    fi
+else
+    echo "No existing hyprlock config found. Skipping backup."
+fi
+
+# Clone the repo
+run_cmd "Cloning repository..." "git clone \"$REPO_URL\" \"$TEMP_DIR\""
+
+# Move files
+run_cmd "Creating config directory" "mkdir -p \"$CONFIG_DIR\""
+
+if [ -d "$TEMP_DIR/hyprlock" ]; then
+    run_cmd "Moving hyprlock folder" "mv \"$TEMP_DIR/hyprlock\" \"$CONFIG_DIR/\""
+fi
+
+if [ -f "$TEMP_DIR/hyprlock.conf" ]; then
+    run_cmd "Moving hyprlock.conf" "mv \"$TEMP_DIR/hyprlock.conf\" \"$CONFIG_DIR/\""
+fi
 
 # Make scripts executable
-echo "Making scripts executable..."
-chmod +x *.sh
+if [ -d "$CONFIG_DIR/hyprlock" ]; then
+    run_cmd "Making scripts executable..." "chmod +x \"$CONFIG_DIR/hyprlock\"/*.sh"
+fi
 
-# Run hyprlock
-echo "Running hyprlock..."
-hyprlock
+# Optional: Run hyprlock
+run_cmd "Running Hyprlock" "hyprlock"
+
+# Cleanup
+run_cmd "Cleaning up temp files..." "rm -rf \"$TEMP_DIR\""
