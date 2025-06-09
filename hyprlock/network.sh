@@ -7,10 +7,18 @@
 # Read the wifi-mode alias from hyprlock.conf
 show_ssid=$(grep -oP '^\$wifi-mode\s*=\s*\K\S+' ~/.config/hypr/hyprlock.conf)
 
-# Check if the username was successfully extracted
+# Check if the SSID was successfully extracted else fallback?!
 if [ -z "$show_ssid" ]; then
-  echo "Username not found in hyprlock.conf."
-  exit 1
+  show_ssid=false
+fi
+
+# Check if any Ethernet connection is active
+ethernet_connected=$(nmcli -t -f DEVICE,TYPE,STATE dev | grep -E 'ethernet:connected')
+
+# If Ethernet
+if [ -n "$ethernet_connected" ]; then
+    echo "󰈀  Ethernet"
+    exit 0
 fi
 
 # Get Wi-Fi connection status
@@ -40,10 +48,10 @@ signal_strength=$(echo "$wifi_info" | cut -d':' -f3)
 # Define Wi-Fi icons based on signal strength
 wifi_icons=("󰤯" "󰤟" "󰤢" "󰤥" "󰤨") # From low to high signal
 
-# Ensure signal_strength is within bounds (0 to 100)
+# Clamp signal strength between 0 and 100
 signal_strength=$((signal_strength < 0 ? 0 : (signal_strength > 100 ? 100 : signal_strength)))
 
-# Calculate the icon index based on signal strength (0–100 -> 0–4)
+# Calculate the icon index based on signal strength
 icon_index=$((signal_strength / 25))
 
 # Get the corresponding icon
@@ -51,9 +59,7 @@ wifi_icon=${wifi_icons[$icon_index]}
 
 # Output based on show_ssid variable
 if [ "$show_ssid" = true ]; then
-    # Show SSID
-    echo "$wifi_icon $ssid"
+    echo "$wifi_icon  $ssid"
 else
-    # Show "Connected"
-    echo "$wifi_icon Connected"
+    echo "$wifi_icon  Connected"
 fi
