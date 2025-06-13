@@ -43,7 +43,7 @@ chmod +x *.sh
 hyprlock
 ```
 
-## 🗄️ Directory Location
+## 🗄️ Directory Structure
 ```md
 $HOME
 └── .config
@@ -52,6 +52,7 @@ $HOME
         │  ├── assets
         │  ├── battery.sh
         │  ├── bluetooth.sh
+        │  ├── change_wallpaper.sh
         │  ├── greeting.sh
         │  ├── network.sh
         │  ├── medianotif.sh
