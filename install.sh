@@ -81,8 +81,8 @@ read -p "Do you want to install the 'hyprlock-change-wallpaper' command? [Y/n]: 
 choice=${choice,,}
 
 if [[ "$choice" != "n" ]]; then
-    run_cmd "Installing hyprlock-change-wallpaper shortcut" "sudo ln -sf $CONFIG_DIR/hyprlock/change-wallpaper.sh /usr/local/bin/hyprlock-change-wallpaper"
-    run_cmd "Make command runable" "chmod +x $CONFIG_DIR/hyprlock/change-wallpaper.sh"
+    run_cmd "Installing hyprlock-change-wallpaper shortcut" "sudo ln -sf $CONFIG_DIR/hyprlock/change_wallpaper.sh /usr/local/bin/hyprlock-change-wallpaper"
+    run_cmd "Make command runable" "chmod +x $CONFIG_DIR/hyprlock/change_wallpaper.sh"
 
     if command -v hyprlock-change-wallpaper &>/dev/null; then
         echo "hyprlock-change-wallpaper was succesfully installed"
